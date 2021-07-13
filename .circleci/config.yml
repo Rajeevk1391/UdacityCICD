@@ -1,13 +1,17 @@
 version: 2.1
 
+workflows:
+  test-env-vars:
+    jobs:
+      - build
+
 jobs:
   build:
     docker:
-      - image: <image>:<tag>
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-        # environment variables available for entrypoint/command run by docker container
-        environment:
-          MY_ENV_VAR_1: my-value-1
-          MY_ENV_VAR_2: my-value-2
+      - image: cimg/base:2020.01
+    steps:
+      - checkout
+      - run:
+          name: "echo an env var that is part of our project"
+          command: |
+            echo $MY_ENV_VAR
